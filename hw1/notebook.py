@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 
 # In[2]:
 
-def run()
+def run():
     taxi_df = pd.read_parquet('https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2025-11.parquet')
     engine = create_engine('postgresql://root:root@localhost:5432/ny_taxi')
     print(pd.io.sql.get_schema(taxi_df, name='green_taxi_data', con=engine))
