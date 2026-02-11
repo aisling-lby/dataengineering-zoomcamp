@@ -5,6 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 from google.cloud import storage
 from google.api_core.exceptions import NotFound, Forbidden
 import time
+from itertools import product
 
 
 # Change this to your bucket name
@@ -16,9 +17,17 @@ client = storage.Client.from_service_account_json(CREDENTIALS_FILE)
 # If commented initialize client with the following
 # client = storage.Client(project='zoomcamp-mod3-datawarehouse')
 
+#BASE_URL = "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_"
+#https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-01.csv.gz
+#YEAR = ['2019-']
+#MONTHS = [f"{i:02d}" for i in range(1, 13)]
 
-BASE_URL = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-"
-MONTHS = [f"{i:02d}" for i in range(1, 7)]
+
+YEARS = ['2019', '2020']
+MONTHS = [f"{i:02d}" for i in range(1, 2)]
+TAXI_TYPES = ["yellow", "green"]
+BASE_URL = "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{type}/{type}_tripdata_{year}-{month}.csv.gz"
+
 DOWNLOAD_DIR = "."
 
 CHUNK_SIZE = 8 * 1024 * 1024
@@ -28,18 +37,22 @@ os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 bucket = client.bucket(BUCKET_NAME)
 
 
-def download_file(month):
-    url = f"{BASE_URL}{month}.parquet"
-    file_path = os.path.join(DOWNLOAD_DIR, f"yellow_tripdata_2024-{month}.parquet")
+def download_file(taxi_types, years,months):
+    #url = f"{BASE_URL}{year}{month}.csv.gz"
 
-    try:
-        print(f"Downloading {url}...")
-        urllib.request.urlretrieve(url, file_path)
-        print(f"Downloaded: {file_path}")
-        return file_path
-    except Exception as e:
-        print(f"Failed to download {url}: {e}")
-        return None
+    for t, y, m in product(taxi_types, years, months):
+        url = BASE_URL.format(type=t, year=y, month=m)
+
+        file_path = os.path.join(DOWNLOAD_DIR, f"{t}_tripdata_{y}-{m}.csv.gz")
+
+        try:
+            print(f"Downloading {url}...")
+            urllib.request.urlretrieve(url, file_path)
+            print(f"Downloaded: {file_path}")
+            return file_path
+        except Exception as e:
+            print(f"Failed to download {url}: {e}")
+            return None
 
 
 def create_bucket(bucket_name):
@@ -105,7 +118,7 @@ if __name__ == "__main__":
     create_bucket(BUCKET_NAME)
 
     with ThreadPoolExecutor(max_workers=4) as executor:
-        file_paths = list(executor.map(download_file, MONTHS))
+        file_paths = list(executor.map(download_file, TAXI_TYPES, YEARS, MONTHS))
 
     with ThreadPoolExecutor(max_workers=4) as executor:
         executor.map(upload_to_gcs, filter(None, file_paths))  # Remove None values
