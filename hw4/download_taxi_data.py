@@ -9,6 +9,10 @@ from google.cloud import storage
 from google.api_core.exceptions import NotFound, Forbidden
 
 CREDENTIALS_FILE = "de-hw3-key.json"
+
+# Set up GCP credentials
+if os.path.exists(CREDENTIALS_FILE):
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.abspath(CREDENTIALS_FILE)
 BASE_URL_PATTERN = (
     "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{type}/{type}_tripdata_{year}-{month}.csv.gz"
 )
@@ -64,7 +68,7 @@ def main():
     parser.add_argument("--dest", default="data", help="Destination directory")
     parser.add_argument("--workers", type=int, default=6, help="Parallel downloads")
     parser.add_argument("--gcs-bucket", default="datazoomcamp-hw3-bucket", help="GCS bucket name to upload files")
-    parser.add_argument("--gcs-creds", default=None, help="Path to GCS service account JSON (optional)")
+    parser.add_argument("--gcs-creds", default="de-hw3-key.json", help="Path to GCS service account JSON (optional)")
     parser.add_argument("--upload", action="store_true", help="Upload downloaded files to GCS")
     args = parser.parse_args()
 
