@@ -1,0 +1,1 @@
+SELECT * FROM ny_taxi.ny_green_taxi_2019
