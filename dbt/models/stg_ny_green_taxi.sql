@@ -1,1 +1,1 @@
-SELECT * FROM de-hw3.ny_taxi.ny_green_taxi_2019
+SELECT * FROM {{ source('ny_taxi', 'ny_green_taxi_2019') }}
