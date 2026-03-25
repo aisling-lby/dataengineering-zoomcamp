@@ -1,1 +1,1 @@
-SELECT * FROM de-hw3.taxi_zone_lookup
+SELECT * FROM de-hw3.ny_taxi.taxi_zone_lookup
