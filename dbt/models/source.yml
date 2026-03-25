@@ -1,5 +1,5 @@
 sources:
-    - name: new_york_taxi
+    - name: ny_taxi
       description: This is a replica of the new york taxi dataset
       database: de-hw3
       schema: ny_taxi
