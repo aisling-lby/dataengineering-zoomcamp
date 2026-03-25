@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: taxi_zone_lookup
+    columns:
+      - name: locationid
+        data_tests:
+          - unique
+          - not_null
