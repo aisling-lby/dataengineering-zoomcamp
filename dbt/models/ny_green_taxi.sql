@@ -1,1 +1,1 @@
-SELECT * FROM ny_taxi.ny_green_taxi_2019
+SELECT * FROM de-hw3.ny_taxi.ny_green_taxi_2019
