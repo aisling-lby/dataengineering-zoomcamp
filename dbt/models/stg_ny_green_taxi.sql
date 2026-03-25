@@ -1,0 +1,1 @@
+SELECT * FROM {{ source('ny_taxi', 'ny_green_taxi_2019') }}

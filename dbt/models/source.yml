@@ -1,0 +1,10 @@
+sources:
+    - name: ny_taxi
+      description: This is a replica of the new york taxi dataset
+      database: de-hw3
+      schema: ny_taxi
+      tables:
+          - name: ny_green_taxi_2019
+            description: One record per row.
+          - name: taxi_zone_lookup
+            description: One record per row

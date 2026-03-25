@@ -1,0 +1,1 @@
+SELECT * FROM {{ source('ny_taxi', 'taxi_zone_lookup') }}
