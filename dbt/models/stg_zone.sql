@@ -1,1 +1,1 @@
-SELECT * FROM {{ source('ny_taxi', 'ny_green_taxi_2019') }}.taxi_zone_lookup
+SELECT * FROM {{ source('ny_taxi', 'taxi_zone_lookup') }}
