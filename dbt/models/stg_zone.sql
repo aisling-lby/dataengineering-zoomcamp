@@ -1,0 +1,1 @@
+SELECT * FROM de-hw3.taxi_zone_lookup
